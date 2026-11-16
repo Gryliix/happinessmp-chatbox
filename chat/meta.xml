@@ -1,0 +1,13 @@
+<meta type="lua">
+    <file src="UI/chat.html" />
+    <file src="UI/chat.css" />
+    <file src="UI/chat.js" />
+    <script type="client" src="config.lua" />
+    <script type="client" src="client/chat.lua" />
+    <script type="server" src="config.lua" />
+    <script type="server" src="server/chat.lua" />
+    <export type="client" function="AddMessage" />
+    <export type="server" function="SendMessage" />
+    <export type="server" function="BroadcastMessage" />
+    <export type="server" function="SetPlayerRank" />
+</meta>

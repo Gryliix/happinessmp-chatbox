@@ -1,0 +1,145 @@
+/*
+    ============================================================
+      CHAT
+    ============================================================
+      The chat style. Position, width and colour come from config.lua.
+
+      File     : UI/chat.css
+      Author   : Grylix
+      Site     : https://grylix.dev
+      GitHub   : https://github.com/Gryliix
+      Version  : 1.0 (16/11/2026)
+      For      : HappinessMP
+    ============================================================
+*/
+
+:root {
+    --accent: #a78bfa;
+    --line-h: 22px;
+    --lines: 8;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: hidden;
+}
+
+#chat {
+    position: absolute;
+    top: 3%;
+    left: 3%;
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+}
+
+#chat.hidden-all {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#feed {
+    list-style: none;
+    margin: 0;
+    padding: 6px;
+    box-sizing: border-box;
+    max-height: calc(var(--lines) * var(--line-h) + 12px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    border-radius: 10px;
+    background: transparent;
+    transition: background 0.25s ease;
+}
+
+#chat.open #feed {
+    overflow-y: auto;
+    background: rgba(10, 10, 14, 0.6);
+}
+
+#feed::-webkit-scrollbar { width: 6px; }
+#feed::-webkit-scrollbar-track { background: transparent; }
+#feed::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 3px; }
+
+#feed li {
+    min-height: var(--line-h);
+    line-height: var(--line-h);
+    font-size: 14px;
+    color: #eeeeee;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    word-wrap: break-word;
+    animation: lineIn 0.22s ease-out both;
+    transition: opacity 0.6s ease;
+}
+
+#feed li.old { opacity: 0; }
+#chat.open #feed li.old { opacity: 1; }
+
+@keyframes lineIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.badge {
+    display: inline-block;
+    margin-right: 6px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+    vertical-align: 1px;
+    color: #ffffff;
+    background: var(--accent);
+    text-shadow: none;
+}
+
+.name { font-weight: 600; }
+
+li.notice { color: #ef9f27; font-style: italic; }
+
+#bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 6px;
+    border-radius: 10px;
+    background: rgba(10, 10, 14, 0.6);
+    animation: lineIn 0.18s ease-out both;
+}
+
+#bar.hidden { display: none; }
+
+#channel {
+    padding: 4px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--accent);
+    white-space: nowrap;
+}
+
+#input {
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#input:focus { border-color: var(--accent); }
+#input::placeholder { color: rgba(255, 255, 255, 0.4); }
