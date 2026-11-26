@@ -6,7 +6,7 @@
       Author   : Grylix
       Site     : https://grylix.dev
       GitHub   : https://github.com/Gryliix
-      Version  : 1.0 (16/11/2026)
+      Version  : 1.1 (26/11/2026)
       For      : HappinessMP
     ============================================================
 ]]
@@ -41,11 +41,20 @@ ChatConfig = {
     },
     DefaultRank = "player",
 
-    -- Quick way to give a rank, by player name (anyone with this name gets it).
-    -- For a real admin system, call Exports.chat:SetPlayerRank(id, "admin") from your own script.
+    -- Quick way to give a rank. Anyone can pick any name, so the IP must match too.
+    -- An entry without an ip is ignored. If your IP changes often, or for a real admin system,
+    -- call Exports.chat:SetPlayerRank(id, "admin") from your own script.
     Staff = {
-        -- ["YourName"] = "owner",
+        -- ["YourName"] = { rank = "owner", ip = "203.0.113.10" },
     },
+
+    -- Private messages: "/mp name message" (a player ID works too), "/r message" answers.
+    PrivateCommands = { "mp", "pm" }, -- {} = private messages off
+    ReplyCommand = "r",
+    PrivateColor = "#f472b6",
+
+    -- A message when a player joins or leaves.
+    JoinLeave = true,
 
     Texts = {
         en = {
@@ -53,12 +62,32 @@ ChatConfig = {
             placeholder = "Type your message",
             flood = "Slow down, wait a few seconds.",
             repeated = "You already sent that.",
+            pm_usage = "Use: /mp name message",
+            pm_notfound = "Player not found.",
+            pm_self = "You cannot message yourself.",
+            pm_noreply = "Nobody to answer.",
+            pm_from = "From",
+            pm_to = "To",
+            joined = "joined the server",
+            left_timeout = "lost connection",
+            left_quit = "left the server",
+            left_kick = "was kicked",
         },
         fr = {
             channel = "Global",
             placeholder = "Écris ton message",
             flood = "Doucement, attends quelques secondes.",
             repeated = "Tu viens déjà d'envoyer ça.",
+            pm_usage = "Écris : /mp pseudo message",
+            pm_notfound = "Joueur introuvable.",
+            pm_self = "Tu ne peux pas t'écrire à toi-même.",
+            pm_noreply = "Personne à qui répondre.",
+            pm_from = "De",
+            pm_to = "À",
+            joined = "a rejoint le serveur",
+            left_timeout = "a perdu la connexion",
+            left_quit = "a quitté le serveur",
+            left_kick = "a été expulsé",
         },
     },
 }

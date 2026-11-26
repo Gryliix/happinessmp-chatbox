@@ -2,8 +2,9 @@
 
 A chat for [HappinessMP](https://happinessmp.net).
 Press T or Y to write, Enter to send, Escape to close. Names are coloured by rank.
+Private messages with `/mp name message` (or `/pm`), `/r message` to answer. A message shows when a player joins or leaves.
 
-![Chat](docs/chatbox.png)
+![Chat](docs/chatbox-v1.1.png)
 
 *[Version française plus bas](#français)*
 
@@ -28,7 +29,9 @@ Everything is in `chat/config.lua`:
 - `MaxLength`: max characters per message.
 - `Flood` / `BlockRepeat`: anti-spam.
 - `Ranks`: name colour of each rank.
-- `Staff`: gives a rank by player name.
+- `Staff`: gives a rank by player name **and IP** (a name alone can be copied by anyone).
+- `PrivateCommands` / `ReplyCommand` / `PrivateColor`: private messages (`{}` turns them off).
+- `JoinLeave`: join and leave messages.
 
 Press Up and Down in the input to bring back your last messages.
 
@@ -73,6 +76,7 @@ MIT, see [LICENSE](LICENSE).
 
 Un chat pour [HappinessMP](https://happinessmp.net).
 Appuie sur T ou Y pour écrire, Entrée pour envoyer, Échap pour fermer. Les pseudos sont colorés selon le rang.
+Messages privés avec `/mp pseudo message` (ou `/pm`), `/r message` pour répondre. Un message s'affiche quand un joueur rejoint ou quitte.
 
 ### Installation
 
@@ -95,7 +99,9 @@ Tout est dans `chat/config.lua` :
 - `MaxLength` : nombre max de caractères par message.
 - `Flood` / `BlockRepeat` : antispam.
 - `Ranks` : couleur du pseudo de chaque rang.
-- `Staff` : donne un rang selon le pseudo du joueur.
+- `Staff` : donne un rang selon le pseudo **et l'IP** du joueur (un pseudo seul peut être copié par n'importe qui).
+- `PrivateCommands` / `ReplyCommand` / `PrivateColor` : messages privés (`{}` les coupe).
+- `JoinLeave` : messages d'arrivée et de départ.
 
 Flèche haut et bas dans la saisie pour retrouver tes derniers messages.
 

@@ -9,7 +9,7 @@
       Author   : Grylix
       Site     : https://grylix.dev
       GitHub   : https://github.com/Gryliix
-      Version  : 1.0 (16/11/2026)
+      Version  : 1.1 (26/11/2026)
       For      : HappinessMP
     ============================================================
 
@@ -68,8 +68,8 @@ local function pushConfig()
     if not pageReady then return end
     local t = cfg.Texts[language] or cfg.Texts.en
     local json = string.format(
-        '{"position":%s,"offsetX":%s,"offsetY":%s,"width":%s,"lines":%s,"fade":%s,"accent":%s,"channel":%s,"placeholder":%s,"maxLength":%s}',
-        jsonString(cfg.Position), tonumber(cfg.OffsetX), tonumber(cfg.OffsetY), tonumber(cfg.Width),
+        '{"privateColor":%s,"position":%s,"offsetX":%s,"offsetY":%s,"width":%s,"lines":%s,"fade":%s,"accent":%s,"channel":%s,"placeholder":%s,"maxLength":%s}',
+        jsonString(cfg.PrivateColor), jsonString(cfg.Position), tonumber(cfg.OffsetX), tonumber(cfg.OffsetY), tonumber(cfg.Width),
         tonumber(cfg.Lines), tonumber(cfg.FadeDelay), jsonString(cfg.AccentColor),
         jsonString(t.channel), jsonString(t.placeholder), tonumber(cfg.MaxLength))
     WebUI.CallEvent(webui, "chatbox:config", { json })
@@ -132,11 +132,36 @@ Events.Subscribe("chatbox:ready", function()
     applyHidden()
 end, true)
 
+-- Private message commands are handled here. Returns false for any other command.
+local function privateCommand(text)
+    if #cfg.PrivateCommands == 0 then return false end
+    local command, rest = text:match("^/(%S+)%s*(.*)$")
+    if not command then return false end
+    command = command:lower()
+    if command == cfg.ReplyCommand then
+        if rest ~= "" then Events.CallRemote("chatbox:reply", { rest }) end
+        return true
+    end
+    for _, name in ipairs(cfg.PrivateCommands) do
+        if command == name then
+            local who, message = rest:match("^(%S+)%s+(.+)$")
+            if who then
+                Events.CallRemote("chatbox:private", { who, message })
+            else
+                local t = cfg.Texts[language] or cfg.Texts.en
+                addLine("notice", t.pm_usage)
+            end
+            return true
+        end
+    end
+    return false
+end
+
 Events.Subscribe("chatbox:submit", function(text)
     closeInput()
     if not text or text == "" then return end
     if text:sub(1, 1) == "/" then
-        Events.Call("chatCommand", { text })
+        if not privateCommand(text) then Events.Call("chatCommand", { text }) end
     else
         Events.CallRemote("chatbox:send", { text })
     end
@@ -161,6 +186,16 @@ Events.Subscribe("chatbox:notice", function(code)
     if t[code] then addLine("notice", t[code]) end
 end, true)
 
+Events.Subscribe("chatbox:private", function(code, name, text)
+    local t = cfg.Texts[language] or cfg.Texts.en
+    addLine("private", t[code], name, text)
+end, true)
+
+Events.Subscribe("chatbox:presence", function(code, name, color)
+    local t = cfg.Texts[language] or cfg.Texts.en
+    addLine(code == "joined" and "join" or "leave", name, color, t[code])
+end, true)
+
 function AddMessage(text)
     addLine("system", tostring(text))
 end
@@ -180,6 +215,8 @@ end)
 
 Events.Subscribe("scriptInit", function()
     webui = WebUI.Create("resource://" .. Resource.GetCurrentName() .. "/UI/chat.html", 1920, 1080, true)
+
+    Events.CallRemote("chatbox:join", {})
 
     Thread.Create(function()
         while true do

@@ -9,7 +9,7 @@
       Author   : Grylix
       Site     : https://grylix.dev
       GitHub   : https://github.com/Gryliix
-      Version  : 1.0 (16/11/2026)
+      Version  : 1.1 (26/11/2026)
       For      : HappinessMP
     ============================================================
 */
@@ -32,6 +32,7 @@ var MAX_HISTORY = 20;
 function applyConfig(cfg) {
     var root = document.documentElement.style;
     root.setProperty("--accent", cfg.accent);
+    root.setProperty("--private", cfg.privateColor);
     root.setProperty("--lines", cfg.lines);
 
     chat.style.top = chat.style.bottom = chat.style.left = chat.style.right = "auto";
@@ -66,6 +67,14 @@ function addColoured(parent, text, baseColor) {
     }
 }
 
+function addSpan(parent, className, text) {
+    var span = document.createElement("span");
+    span.className = className;
+    span.textContent = text;
+    parent.appendChild(span);
+    return span;
+}
+
 function addLine(kind, a, b, c) {
     var li = document.createElement("li");
     li.dataset.t = Date.now();
@@ -81,6 +90,19 @@ function addLine(kind, a, b, c) {
         li.appendChild(badge);
         li.appendChild(name);
         addColoured(li, c, "#eeeeee");
+    } else if (kind === "private") {
+        // a = "From" / "To", b = the other player, c = text
+        li.className = "private";
+        addSpan(li, "badge", a);
+        addSpan(li, "name", b + ": ");
+        addSpan(li, "", c);
+    } else if (kind === "join" || kind === "leave") {
+        // a = player, b = rank colour, c = "joined the server"...
+        li.className = "presence " + kind;
+        var pill = addSpan(li, "pill", "");
+        addSpan(pill, "icon", "");
+        addSpan(pill, "name", a).style.color = b;
+        addSpan(pill, "what", " " + c);
     } else if (kind === "notice") {
         li.className = "notice";
         li.textContent = a;

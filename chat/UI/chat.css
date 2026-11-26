@@ -8,13 +8,14 @@
       Author   : Grylix
       Site     : https://grylix.dev
       GitHub   : https://github.com/Gryliix
-      Version  : 1.0 (16/11/2026)
+      Version  : 1.1 (26/11/2026)
       For      : HappinessMP
     ============================================================
 */
 
 :root {
     --accent: #a78bfa;
+    --private: #f472b6;
     --line-h: 22px;
     --lines: 8;
 }
@@ -101,7 +102,53 @@ html, body {
 
 .name { font-weight: 600; }
 
-li.notice { color: #ef9f27; font-style: italic; }
+#feed li.notice { color: #ef9f27; font-style: italic; }
+
+li.private .badge { background: var(--private); }
+li.private .name { color: var(--private); }
+
+#feed li.presence { padding: 2px 0; }
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    white-space: pre;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 10px 0 3px;
+    border-radius: 11px;
+    font-size: 13px;
+    background: linear-gradient(90deg, rgba(var(--tone), 0.42), rgba(10, 10, 14, 0.45));
+}
+
+li.join { --tone: 52, 199, 123; }
+li.leave { --tone: 226, 75, 74; }
+
+.pill .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 7px;
+    border-radius: 50%;
+    position: relative;
+    flex: none;
+    background: rgb(var(--tone));
+}
+
+/* + and - are drawn: a text character is never exactly centred. */
+.pill .icon::before,
+.pill .icon::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 7px;
+    width: 8px;
+    height: 2px;
+    background: #ffffff;
+}
+
+li.join .icon::after { transform: rotate(90deg); }
+
+.pill .what { color: #d8d8de; }
 
 #bar {
     display: flex;
